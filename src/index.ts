@@ -721,6 +721,7 @@ async function dockerBuild(
       'echo "::group::Install sccache"',
       'uv tool install "sccache>=0.10.0"',
       'sccache --version',
+      'sccache rustc -vV',
       'echo "::endgroup::"'
     )
     setupSccacheEnv()
@@ -1011,6 +1012,7 @@ async function hostBuild(
     core.startGroup('Install sccache')
     await exec.exec('python3', ['-m', 'pip', 'install', 'sccache>=0.10.0'])
     await exec.exec('sccache', ['--version'])
+    await exec.exec('sccache', ['rustc', '-vV'])
     setupSccacheEnv()
     core.endGroup()
   }
