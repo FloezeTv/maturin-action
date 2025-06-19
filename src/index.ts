@@ -969,7 +969,7 @@ async function hostBuild(
   if (rustToolchain && rustToolchain.length > 0) {
     core.info(`Installing Rust toolchain ${rustToolchain}`)
     // Force rustup to use the selected toolchain anywhere (especially in invocations by sccache)
-    process.env['RUSTUP_TOOLCHAIN'] = rustToolchain
+    // process.env['RUSTUP_TOOLCHAIN'] = rustToolchain
     await exec.exec('rustup', ['update', '--no-self-update', rustToolchain])
     await exec.exec('rustup', ['override', 'set', rustToolchain])
     await exec.exec('rustup', ['component', 'add', 'llvm-tools-preview'], {
@@ -1012,6 +1012,7 @@ async function hostBuild(
     core.startGroup('Install sccache')
     await exec.exec('python3', ['-m', 'pip', 'install', 'sccache>=0.10.0'])
     await exec.exec('sccache', ['--version'])
+    await exec.exec('sccache', ['rustc', '-vV'], {cwd: '/'})
     await exec.exec('sccache', ['rustc', '-vV'])
     setupSccacheEnv()
     core.endGroup()
