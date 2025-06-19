@@ -662,6 +662,8 @@ async function dockerBuild(
   commands.push(
     // Install Rust
     'echo "::group::Install Rust"',
+    // Force rustup to use the selected toolchain anywhere (especially in invocations by sccache)
+    `export RUSTUP_TOOLCHAIN="${rustToolchain}"`,
     // refer to https://github.com/rust-lang/rustup/issues/1167#issuecomment-367061388
     `command -v rustup &> /dev/null && { rm -frv ~/.rustup/toolchains/; rustup show; } || curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal`,
     'export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"',
@@ -965,6 +967,8 @@ async function hostBuild(
   core.startGroup('Install Rust target')
   if (rustToolchain && rustToolchain.length > 0) {
     core.info(`Installing Rust toolchain ${rustToolchain}`)
+    // Force rustup to use the selected toolchain anywhere (especially in invocations by sccache)
+    process.env['RUSTUP_TOOLCHAIN'] = rustToolchain
     await exec.exec('rustup', ['update', '--no-self-update', rustToolchain])
     await exec.exec('rustup', ['override', 'set', rustToolchain])
     await exec.exec('rustup', ['component', 'add', 'llvm-tools-preview'], {
