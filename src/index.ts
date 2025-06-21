@@ -662,8 +662,8 @@ async function dockerBuild(
   commands.push(
     // Install Rust
     'echo "::group::Install Rust"',
-    // Force rustup to use the selected toolchain anywhere (especially in invocations by sccache)
-    `export RUSTUP_TOOLCHAIN="${rustToolchain}"`,
+    // // Force rustup to use the selected toolchain anywhere (especially in invocations by sccache)
+    // `export RUSTUP_TOOLCHAIN="${rustToolchain}"`,
     // refer to https://github.com/rust-lang/rustup/issues/1167#issuecomment-367061388
     `command -v rustup &> /dev/null && { rm -frv ~/.rustup/toolchains/; rustup show; } || curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal`,
     'export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"',
