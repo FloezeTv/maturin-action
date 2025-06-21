@@ -671,6 +671,7 @@ async function dockerBuild(
     `rustup update --no-self-update ${rustToolchain}`,
     `rustup override set ${rustToolchain}`,
     `rustup component add llvm-tools-preview || true`,
+    'rustup show',
     'echo "::endgroup::"',
     // Add all supported python versions to PATH
     'export PATH="$PATH:/opt/python/cp37-cp37m/bin:/opt/python/cp38-cp38/bin:/opt/python/cp39-cp39/bin:/opt/python/cp310-cp310/bin:/opt/python/cp311-cp311/bin:/opt/python/cp312-cp312/bin"',
@@ -721,7 +722,7 @@ async function dockerBuild(
       'echo "::group::Install sccache"',
       'uv tool install "sccache>=0.10.0"',
       'sccache --version',
-      'sccache rustc -vV',
+      // 'sccache rustc -vV',
       'echo "::endgroup::"'
     )
     setupSccacheEnv()
