@@ -664,6 +664,7 @@ async function dockerBuild(
     'echo "::group::Install Rust"',
     // // Force rustup to use the selected toolchain anywhere (especially in invocations by sccache)
     // `export RUSTUP_TOOLCHAIN="${rustToolchain}"`,
+    'ls -lA ~/.rustup/toolchains/',
     // refer to https://github.com/rust-lang/rustup/issues/1167#issuecomment-367061388
     `command -v rustup &> /dev/null && { rm -frv ~/.rustup/toolchains/; rustup show; } || curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal`,
     'export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"',
@@ -672,6 +673,7 @@ async function dockerBuild(
     `rustup override set ${rustToolchain}`,
     `rustup component add llvm-tools-preview || true`,
     'rustup show',
+    'cat /etc/os-release',
     'echo "::endgroup::"',
     // Add all supported python versions to PATH
     'export PATH="$PATH:/opt/python/cp37-cp37m/bin:/opt/python/cp38-cp38/bin:/opt/python/cp39-cp39/bin:/opt/python/cp310-cp310/bin:/opt/python/cp311-cp311/bin:/opt/python/cp312-cp312/bin"',
